@@ -7,21 +7,34 @@ const Form = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
-    const handleSubmit = function(e) {
+    const handleSubmit = function (e) {
         e.preventDefault();
-    
+
         let isNameEmpty = name === '';
         let isEmailEmpty = email === '';
         let isPasswordEmpty = password === '';
-    
+
         if (isNameEmpty || isEmailEmpty || isPasswordEmpty) {
             setErrorMessage('Please fill in all fields.');
             return;
         }
-    
+
+        let isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!isEmailValid) {
+            setErrorMessage('Please enter a valid email address.');
+            return;
+        }
+
+        let isPasswordLengthValid = (password.length >= 6) && (password.length <= 12);
+        if (!isPasswordLengthValid) {
+            setErrorMessage('Password should be between 6-12 characters long.');
+            return;
+        }
+
         setErrorMessage('');
         setSuccessMessage('Form submitted successfully!');
-    };    
+    };
+
 
     return (
         <div>
