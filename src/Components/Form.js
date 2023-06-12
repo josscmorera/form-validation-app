@@ -7,6 +7,22 @@ const Form = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
+    const handleSubmit = function(e) {
+        e.preventDefault();
+    
+        let isNameEmpty = name === '';
+        let isEmailEmpty = email === '';
+        let isPasswordEmpty = password === '';
+    
+        if (isNameEmpty || isEmailEmpty || isPasswordEmpty) {
+            setErrorMessage('Please fill in all fields.');
+            return;
+        }
+    
+        setErrorMessage('');
+        setSuccessMessage('Form submitted successfully!');
+    };    
+
     return (
         <div>
             <form onSubmit={handleSubmit}>
