@@ -1,11 +1,10 @@
+import React from 'react';
 import './App.css';
-import React, { useState } from 'react';
 import Form from './Components/Form';
-
 
 const App = () => {
   return (
-    <div className="form-container">
+    <div className="App">
       <h1>Form Validation App</h1>
       <Form />
     </div>

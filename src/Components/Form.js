@@ -4,30 +4,49 @@ const Form = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [nameError, setNameError] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
-    const handleSubmit = function (e) {
+    const handleNameChange = (e) => {
+        const value = e.target.value;
+        setName(value);
+
+        if (!value) {
+            setNameError('Name is required.');
+        } else if (!/^[a-zA-Z\s]*$/.test(value)) {
+            setNameError('Only letters are allowed in the name field.');
+        } else {
+            setNameError('');
+        }
+    };
+
+
+    const handleEmailChange = (e) => {
+        const value = e.target.value;
+        setEmail(value);
+        setEmailError(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Invalid email address.');
+    };
+
+    const handlePasswordChange = (e) => {
+        const value = e.target.value;
+        setPassword(value);
+        if (!value) {
+            setPasswordError('Password is required.');
+        } else if (value.length < 6 || value.length > 12) {
+            setPasswordError('Password should be between 6-12 characters long.');
+        } else {
+            setPasswordError('');
+        }
+    };
+
+    const handleSubmit = (e) => {
         e.preventDefault();
 
-        let isNameEmpty = name === '';
-        let isEmailEmpty = email === '';
-        let isPasswordEmpty = password === '';
-
-        if (isNameEmpty || isEmailEmpty || isPasswordEmpty) {
-            setErrorMessage('Please fill in all fields.');
-            return;
-        }
-
-        let isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        if (!isEmailValid) {
-            setErrorMessage('Please enter a valid email address.');
-            return;
-        }
-
-        let isPasswordLengthValid = (password.length >= 6) && (password.length <= 12);
-        if (!isPasswordLengthValid) {
-            setErrorMessage('Password should be between 6-12 characters long.');
+        if (nameError || emailError || passwordError) {
+            setErrorMessage('Please fix the input errors before submitting.');
             return;
         }
 
@@ -35,28 +54,15 @@ const Form = () => {
         setSuccessMessage('Form submitted successfully!');
     };
 
-
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <input type="text" placeholder="Name" value={name} onChange={handleNameChange} /><br />
+                {nameError && <p style={{ color: 'red' }}>{nameError}</p>}
+                <input type="email" placeholder="Email" value={email} onChange={handleEmailChange} /><br />
+                {emailError && <p style={{ color: 'red' }}>{emailError}</p>} 
+                <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} /><br />
+                {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
                 <button type="submit">Submit</button>
             </form>
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
